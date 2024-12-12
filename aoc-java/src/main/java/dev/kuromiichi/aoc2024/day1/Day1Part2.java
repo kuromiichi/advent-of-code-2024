@@ -7,7 +7,7 @@ import java.util.List;
 
 import static dev.kuromiichi.aoc2024.day1.Common.*;
 
-public class Day1Part1 {
+public class Day1Part2 {
     public static void main(String[] args) {
         String input = Utils.readInput(INPUT_PATH);
 
@@ -29,39 +29,26 @@ public class Day1Part1 {
 
         splitInput(input, left, right);
 
-        // Sort the lists
-        sortLists(left, right);
+        // Calculate similarity for each element in the left list
+        List<Integer> similarities = calculateSimilarities(left, right);
 
-        // Calculate the distance between each pair of elements
-        List<Integer> distances = calculateDistances(left, right);
+        // Sum the similarities
+        int sum = sumIntegers(similarities);
 
-        // Sum the distances
-        int sum = sumIntegers(distances);
-
+        // Return the sum
         return String.valueOf(sum);
     }
 
     /**
-     * Sorts the lists.
+     * Calculates the similarity for each element in the left list
      *
      * @param left  the left list
      * @param right the right list
+     * @return the similarity for each element in the left list
      */
-    private static void sortLists(List<Integer> left, List<Integer> right) {
-        left.sort(Integer::compareTo);
-        right.sort(Integer::compareTo);
-    }
-
-    /**
-     * Calculates the distance between each pair of elements in two lists.
-     *
-     * @param left  the left list
-     * @param right the right list
-     * @return the distance between each pair of elements
-     */
-    private static List<Integer> calculateDistances(List<Integer> left, List<Integer> right) {
+    private static List<Integer> calculateSimilarities(List<Integer> left, List<Integer> right) {
         return left.stream()
-                .map(n -> Math.abs(n - right.get(left.indexOf(n))))
+                .map(n -> n * (int) right.stream().filter(n::equals).count())
                 .toList();
     }
 }
